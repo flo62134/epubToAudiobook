@@ -50,7 +50,9 @@ def convert():
             text_content = f.read()
 
         # Split text_content into sentences (sentences are separated by periods)
-        sentences = text_content.split('.')
+        delimiter = '.'
+        sentences = [x+delimiter for x in text_content.split(delimiter) if x]
+        print(sentences)
 
         audio_pieces = []
 
