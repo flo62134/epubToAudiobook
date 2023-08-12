@@ -15,10 +15,29 @@ def custom_sort(filename):
     return numbers
 
 
+def merge_sentences(sentences):
+    MAX_LENGTH = 600
+    merged_sentences = []
+    current_sentence = ''
+
+    for sentence in sentences:
+        if len(current_sentence) + len(sentence) <= MAX_LENGTH:
+            current_sentence += sentence
+        else:
+            merged_sentences.append(current_sentence)
+            current_sentence = sentence
+
+    if current_sentence:
+        merged_sentences.append(current_sentence)
+
+    return merged_sentences
+
+
 def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
     sentence = sentence.replace("\n", " ")
 
     if sentence.strip():  # Ensure the sentence is not empty
+        print(sentence)
         inputs = processor(text=sentence, return_tensors="pt")
         speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
         return speech.numpy()
@@ -54,7 +73,7 @@ def convert():
         # Split text_content into sentences (sentences are separated by periods)
         delimiter = '.'
         sentences = [x + delimiter for x in text_content.split(delimiter) if x]
-        print(sentences)
+        sentences = merge_sentences(sentences)
 
         audio_pieces = []
 
