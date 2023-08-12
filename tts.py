@@ -16,6 +16,8 @@ def custom_sort(filename):
 
 
 def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
+    sentence = sentence.replace("\n", " ")
+
     if sentence.strip():  # Ensure the sentence is not empty
         inputs = processor(text=sentence, return_tensors="pt")
         speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
@@ -51,7 +53,7 @@ def convert():
 
         # Split text_content into sentences (sentences are separated by periods)
         delimiter = '.'
-        sentences = [x+delimiter for x in text_content.split(delimiter) if x]
+        sentences = [x + delimiter for x in text_content.split(delimiter) if x]
         print(sentences)
 
         audio_pieces = []
