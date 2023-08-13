@@ -82,8 +82,15 @@ def convert():
             if speech is not None:
                 audio_pieces.append(speech)
 
-        # Merge the audio pieces into a single audio array
-        merged_audio = np.concatenate(audio_pieces, axis=0)
+        # Generate one second of silence
+        silence = np.zeros(16000)
+
+        # Insert the silence between audio pieces
+        merged_audio_pieces = []
+        for piece in audio_pieces:
+            merged_audio_pieces.append(piece)
+            merged_audio_pieces.append(silence)
+        merged_audio = np.concatenate(merged_audio_pieces[:-1], axis=0)  # Exclude the last silence
 
         # Ensure the directory exists
         audio_dir = './audiobook'
