@@ -6,8 +6,6 @@ import soundfile as sf
 import sentencepiece
 import numpy as np
 import re
-from concurrent.futures import ThreadPoolExecutor
-
 
 def custom_sort(filename):
     # Extract numbers from the filename using a regular expression
@@ -44,7 +42,6 @@ def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
         return speech.numpy()
     return None
 
-
 def convert():
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
     model = SpeechT5ForTextToSpeech.from_pretrained("microsoft/speecht5_tts")
@@ -78,14 +75,11 @@ def convert():
 
         audio_pieces = []
 
-        # Parallelize the TTS conversion for sentences
-        with ThreadPoolExecutor(max_workers=6) as executor:
-            results = list(executor.map(tts_conversion, sentences,
-                                        [processor] * len(sentences),
-                                        [model] * len(sentences),
-                                        [speaker_embeddings] * len(sentences),
-                                        [vocoder] * len(sentences)))
-            audio_pieces.extend([res for res in results if res is not None])
+        # Rely on a single thread to avoid errors
+        for sentence in sentences:
+            speech = tts_conversion(sentence, processor, model, speaker_embeddings, vocoder)
+            if speech is not None:
+                audio_pieces.append(speech)
 
         # Merge the audio pieces into a single audio array
         merged_audio = np.concatenate(audio_pieces, axis=0)
