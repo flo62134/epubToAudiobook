@@ -1,11 +1,11 @@
 import os
+import re
+import numpy as np
 from transformers import SpeechT5Processor, SpeechT5ForTextToSpeech, SpeechT5HifiGan
 from datasets import load_dataset
 import torch
 import soundfile as sf
 import sentencepiece
-import numpy as np
-import re
 
 
 def custom_sort(filename):
@@ -34,8 +34,6 @@ def merge_sentences(sentences):
 
 def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
     sentence = sentence.replace("\n", " ")
-    # Convert acronyms like MIT to M I T
-    sentence = re.sub(r'(?<=\W)([A-Z])(?=[A-Z])', r'\1 ', sentence)
 
     if sentence.strip():  # Ensure the sentence is not empty
         print(sentence)
