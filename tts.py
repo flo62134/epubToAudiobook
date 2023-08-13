@@ -12,9 +12,8 @@ def custom_sort(filename):
     numbers = [int(num) for num in re.findall(r'\d+', filename)]
     return numbers
 
-
 def merge_sentences(sentences):
-    MAX_LENGTH = 600
+    MAX_LENGTH = 400
     merged_sentences = []
     current_sentence = ''
 
