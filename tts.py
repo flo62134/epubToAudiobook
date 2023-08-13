@@ -34,6 +34,8 @@ def merge_sentences(sentences):
 
 def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
     sentence = sentence.replace("\n", " ")
+    sentence = sentence.replace("’s", "'s")
+    sentence = sentence.replace("’t", "'t")
 
     if sentence.strip():  # Ensure the sentence is not empty
         print(sentence)
