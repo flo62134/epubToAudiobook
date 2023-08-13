@@ -32,9 +32,10 @@ def merge_sentences(sentences):
 
     return merged_sentences
 
-
 def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
     sentence = sentence.replace("\n", " ")
+    # Convert acronyms like MIT to M I T
+    sentence = re.sub(r'(?<=\W)([A-Z])(?=[A-Z])', r'\1 ', sentence)
 
     if sentence.strip():  # Ensure the sentence is not empty
         print(sentence)
