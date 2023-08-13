@@ -7,10 +7,12 @@ import sentencepiece
 import numpy as np
 import re
 
+
 def custom_sort(filename):
     # Extract numbers from the filename using a regular expression
     numbers = [int(num) for num in re.findall(r'\d+', filename)]
     return numbers
+
 
 def merge_sentences(sentences):
     MAX_LENGTH = 400
@@ -29,6 +31,7 @@ def merge_sentences(sentences):
 
     return merged_sentences
 
+
 def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
     sentence = sentence.replace("\n", " ")
     # Convert acronyms like MIT to M I T
@@ -40,6 +43,7 @@ def tts_conversion(sentence, processor, model, speaker_embeddings, vocoder):
         speech = model.generate_speech(inputs["input_ids"], speaker_embeddings, vocoder=vocoder)
         return speech.numpy()
     return None
+
 
 def convert():
     processor = SpeechT5Processor.from_pretrained("microsoft/speecht5_tts")
